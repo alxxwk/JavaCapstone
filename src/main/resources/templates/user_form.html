@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+
+<body>
+
+
+	<H1>User Management</H1>
+
+	<form th:action="@{/users/save}" th:object="${Users}" method="post"
+		enctype="multipart/form-data">
+
+		<Input type="hidden" th:field="*{id}" required />
+
+		<div>
+			<label> User Name</label>
+		</div>
+		<div>
+			<Input type="text" th:field="*{username}" required />
+		</div>
+
+		<div>
+			<label>Image: </label> <input type="file" name="image"
+				accept="image/png, image/jpeg" />
+		</div>
+
+
+
+		<div>
+			<label> Password</label>
+		</div>
+		<div>
+			<Input type="text" th:field="*{password}" size="25" />
+		</div>
+
+
+
+		<div text-left>
+			<label> Roles</label>
+		</div>
+		<th:block th:each="roles : ${roles}">
+			<div>
+				<input type="checkbox" th:field="*{roles}" th:text="${roles.name}"
+					th:value="${roles.id}" />
+
+			</div>
+		</th:block>
+
+
+		<button type="submit">Save</button>
+
+	</form>
+
+</body>
+
+</html>

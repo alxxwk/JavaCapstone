@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>iBanking Home</title>
+<div th:replace="Components :: links"></div>
+</head>
+<body>
+<div th:replace="Components :: nav"></div>
+
+<div class="row m-5">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Add, Modify and View Customer Details</h5>
+        <p class="card-text">Add, Modify and View All Customer Details</p>
+        <a href="/customers" class="btn btn-primary">Click Here</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Deposit and Withdraw</h5>
+        <p class="card-text">Perform Deposits or Withdrawals</p>
+        <a href="/customeraccounts" class="btn btn-primary">Click Here</a>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="row m-5">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Delete and Modify Accounts</h5>
+        <p class="card-text">Delete and/or Modify Accounts</p>
+        <a href="/mod_delPage" class="btn btn-primary">Click Here</a>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div th:replace="Components :: footer"></div>
+  </body>
+  </html>

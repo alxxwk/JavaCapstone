@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<title>User Accounts</title>
+<div th:replace="Components :: links"></div>
+<style type="text/css">
+.divcenter {
+	width: 70%;
+	margin: auto;
+	margin-top: 40px;
+}
+</style>
+</head>
+<body>
+	<div th:replace="Components :: nav"></div>
+	<div class="divcenter">
+		<h3>User Account Details</h3>
+	</div>
+
+	<div th:replace="Components :: confirmation"></div>
+
+	<div class="divcenter">
+		<div th:replace="Components::searchOneCust"></div>
+		<button type="button" class="btn btn-primary" data-toggle="modal"
+			data-target="#addModal" sec:authorize="hasAuthority('ADMIN')">Add
+			New Customer</button>
+		<table id=crudTable class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">Customer ID</th>
+					<th scope="col">Customer Name</th>
+					<th scope="col">Customer Location</th>
+					<th scope="col">Balance</th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="cust:${custlist}">
+					<td id="getID" th:text="${cust.custid}"></td>
+					<td th:text="${cust.custname}"></td>
+					<td th:text="${cust.location}"></td>
+					<td th:text="'$ ' + ${#numbers.formatDecimal(cust.balance,1,2)}"></td>
+					<td><a class="modbtn"
+						th:href="@{/getOneCust/(id=${cust.custid})}"><i
+							class="fa fa-pencil-square-o" aria-hidden="true"
+							sec:authorize="hasAnyAuthority('ADMIN','EDITOR')">Edit
+								Account</i></a></td>
+					<td><a class="delbtn"
+						th:href="@{/getOneCust/(id=${cust.custid})}"><i
+							class="fa fa-trash" aria-hidden="true"
+							sec:authorize="hasAuthority('ADMIN')">Delete Account</i></a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- Edit Modal Starts -->
+
+	<div class="modal fade" id="editModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Edit Record</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="editForm" action="/add" method="get">
+						<div class="form-group">
+							<label for="recipient-name" class="col-form-label">Customer
+								ID:</label> <input type="text" class="form-control" id="cid" name="cid"
+								readonly>
+						</div>
+						<div class="form-group">
+							<label for="message-text" class="col-form-label">Full
+								Name:</label> <input onClick="this.select();" class="form-control"
+								id="cname" name="cname">
+						</div>
+						<div class="form-group">
+							<label for="message-text" class="col-form-label">Location:</label>
+							<input onClick="this.select();" class="form-control" id="loc"
+								name="loc">
+						</div>
+						<div class="form-group">
+							<label for="message-text" class="col-form-label">Balance:</label>
+							<input onClick="this.select();" class="form-control" id="balance"
+								name="balance">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Cancel</button>
+					<button type="submit" form="editForm" class="btn btn-primary">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Edit Modal Ends -->
+	<!-- Add Modal Starts -->
+
+	<div class="modal fade" id="addModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Add Record</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="addForm" action="/add" method="get">
+						<div class="form-group">
+							<label for="message-text" class="col-form-label">Full
+								Name:</label> <input onClick="this.select();" class="form-control"
+								id="cname" name="cname" autofocus>
+						</div>
+						<div class="form-group">
+							<label for="message-text" class="col-form-label">Location:</label>
+							<input onClick="this.select();" class="form-control" id="loc"
+								name="loc">
+						</div>
+						<div class="form-group">
+							<label for="message-text" class="col-form-label">Balance:</label>
+							<input onClick="this.select();" class="form-control" id="balance"
+								name="balance">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Cancel</button>
+					<button type="submit" form="addForm" class="btn btn-primary">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Add Modal Ends -->
+
+	<!-- Delete Modal Starts -->
+
+	<div class="modal fade" id="delModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Confirm Delete?</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="delForm" action="/delete" method="get">
+						<div class="form-group">
+							<label for="message-text" class="col-form-label">Customer
+								ID:</label> <input onClick="this.select();" class="form-control"
+								id="cidd" name="cidd" readonly>
+						</div>
+						<div class="form-group">
+							<label for="message-text" class="col-form-label">Full
+								Name:</label> <input onClick="this.select();" class="form-control"
+								id="cnamed" name="cnamed" readonly>
+						</div>
+						<div class="form-group">
+							<label for="message-text" class="col-form-label">Location:</label>
+							<input onClick="this.select();" class="form-control" id="locd"
+								name="locd" readonly>
+						</div>
+						<div class="form-group">
+							<label for="message-text" class="col-form-label">Balance:</label>
+							<input onClick="this.select();" class="form-control"
+								id="balanced" name="balanced" readonly>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Cancel</button>
+					<button type="submit" form="delForm" class="btn btn-warning">Delete</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Delete Modal Ends -->
+	<div th:replace="Components :: footer"></div>
+</body>
+</html>
